@@ -7,7 +7,7 @@ import (
 )
 
 func main() {
-	log.SetLevel(log.INFO)
+	log.SetLevel(log.DEBUG)
 	http.HandleFunc("/index.m3u8", indexHandler)
 	http.HandleFunc("/api/", apiHandler)
 	http.HandleFunc("/videoplayback/", videoHandler)

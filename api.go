@@ -11,7 +11,7 @@ import (
 
 func apiHandler(w http.ResponseWriter, r *http.Request) {
 	log.Info("Request URL:%s", r.URL)
-	url := "https://manifest.googlevideo.com" + r.URL.RawPath
+	url := "https://manifest.googlevideo.com" + r.URL.EscapedPath()
 	resp, err := http.Get(url)
 	if err != nil {
 		http.Error(w, err.Error(), 503)

@@ -3,6 +3,7 @@ package main
 import (
 	"io"
 	"net/http"
+	"regexp"
 
 	log "github.com/tominescu/double-golang/simplelog"
 )
@@ -16,10 +17,14 @@ func videoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	host := r.Form.Get("hls_chunk_host")
 	if host == "" {
-		http.Error(w, http.StatusText(503), 503)
-		return
+		re := regexp.MustCompile(`[\w\d-]+\.googlevideo.com`)
+		host = re.FindString(r.URL.Path)
+		if host == "" {
+			http.Error(w, http.StatusText(503), 503)
+			return
+		}
 	}
-	url := "https://" + host + r.URL.Path
+	url := "https://" + host + r.URL.EscapedPath()
 	if len(r.URL.RawQuery) > 0 {
 		url += "?" + r.URL.RawQuery
 	}
